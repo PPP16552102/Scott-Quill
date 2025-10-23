@@ -1,0 +1,19 @@
+{
+  "HomePage": {
+    "title": "grtsinry43",
+    "greeting": "grtsinry43",
+    "moreToSee": "要看更多？",
+    "personalityAndInterests": "下面，继续看看我的个性和兴趣吧~",
+    "footerRights": "© {year} grtsinry43. 保留所有权利。",
+    "srGitHub": "GitHub",
+    "srEmail": "Email",
+    "srBlog": "博客",
+    "parallaxText1": "全栈 • Java • JavaScript • Kotlin • TypeScript • React • Next.js • Spring Boot",
+    "parallaxText2": "Vue.js • Android • Jetpack Compose • 微信小程序 • Arch Linux • 创新 • 探索 • 开发"
+  },
+  "FriendLinksSection": {
+    "title": "友情链接",
+    "subtitle": "看看我的朋友们和启发我灵感的一些很棒的网站。",
+    "visitButton": "访问网站"
+  }
+}

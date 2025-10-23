@@ -1,0 +1,19 @@
+{
+  "HomePage": {
+    "title": "grtsinry43",
+    "greeting": "grtsinry43",
+    "moreToSee": "Want to see more?",
+    "personalityAndInterests": "Below, let's continue to check out my personality and interests~",
+    "footerRights": "© {year} grtsinry43. All rights reserved.",
+    "srGitHub": "GitHub",
+    "srEmail": "Email",
+    "srBlog": "Blog",
+    "parallaxText1": "Full Stack • Java • JavaScript • Kotlin • TypeScript • React • Next.js • Spring Boot",
+    "parallaxText2": "Vue.js • Android • Jetpack Compose • WeChat Miniprogram • Arch Linux • Innovation • Exploration • Development"
+  },
+  "FriendLinksSection": {
+    "title": "Friend Links",
+    "subtitle": "Check out some amazing websites from my friends and inspirations.",
+    "visitButton": "Visit Site"
+  }
+}
