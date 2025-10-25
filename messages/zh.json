@@ -15,5 +15,12 @@
     "title": "友情链接",
     "subtitle": "看看我的朋友们和启发我灵感的一些很棒的网站。",
     "visitButton": "访问网站"
+  },
+  "Menu": {
+    "about": "关于",
+    "skill": "技能",
+    "project": "项目",
+    "contact": "联系方式",
+    "blog": "博客"
   }
 }
