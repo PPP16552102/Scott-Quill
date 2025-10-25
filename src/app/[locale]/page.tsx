@@ -2,15 +2,32 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { motion, useScroll, useTransform } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import NavigationMenu from "@/components/navigation-menu";
+import CreativeCanvas from "@/components/creative-canvas";
 
 const HomePage = () => {
   const t = useTranslations("HomePage");
   const { scrollYProgress } = useScroll();
   const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const springConfig = {
+    damping: 25,
+    stiffness: 700,
+  };
+  const mouseXSpring = useSpring(mouseX, springConfig);
+  const mouseYSpring = useSpring(mouseY, springConfig);
 
   const [scrolled, setScrolled] = useState(false);
 
@@ -63,7 +80,14 @@ const HomePage = () => {
           <NavigationMenu scrolled={scrolled} />
         </div>
       </header>
-      <main></main>
+
+      <main className="relative overflow-hidden">
+        <div className="relative w-full h-screen overflow-hidden flex items-center justify-center">
+          <div className="absolute inset-0">
+            <CreativeCanvas mouseX={mouseXSpring} mouseY={mouseYSpring} />
+          </div>
+        </div>
+      </main>
     </div>
   );
 };

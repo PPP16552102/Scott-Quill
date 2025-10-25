@@ -1,3 +1,5 @@
+"use client";
+
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
@@ -7,10 +9,6 @@ import { motion, AnimatePresence } from "framer-motion";
 const ThemeToggle = () => {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-
-  const handleThemeClick = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
 
   useEffect(() => {
     setMounted(true);
@@ -30,7 +28,7 @@ const ThemeToggle = () => {
     <Button
       variant="outline"
       size="icon"
-      onClick={handleThemeClick}
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       className="w-9 h-9 rounded-full relative overflow-hidden"
     >
       <AnimatePresence mode="wait" initial={false}>
