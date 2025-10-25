@@ -1,13 +1,35 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
+import NavigationMenu from "@/components/navigation-menu";
+import CreativeCanvas from "@/components/creative-canvas";
 
 const HomePage = () => {
   const t = useTranslations("HomePage");
   const { scrollYProgress } = useScroll();
-
   const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const springConfig = {
+    damping: 25,
+    stiffness: 700,
+  };
+  const mouseXSpring = useSpring(mouseX, springConfig);
+  const mouseYSpring = useSpring(mouseY, springConfig);
+
+  const [scrolled, setScrolled] = useState(false);
 
   return (
     <div className="">
@@ -37,7 +59,35 @@ const HomePage = () => {
         </motion.div>
       </motion.div>
 
-      <header>123</header>
+      <header
+        className={cn(
+          "fixed top-0 right-0 z-50 transition-all duration-500 w-full",
+          scrolled
+            ? "backdrop-blur-xl bg-background/70 border-b border-border/30"
+            : "bg-transparent"
+        )}
+      >
+        <div className="container flex items-center justify-between h-16 px-4 mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Link href="/public" className="text-xl font-bold tracking-tight">
+              {t("title")}
+            </Link>
+          </motion.div>
+          <NavigationMenu scrolled={scrolled} />
+        </div>
+      </header>
+
+      <main className="relative overflow-hidden">
+        <div className="relative w-full h-screen overflow-hidden flex items-center justify-center">
+          <div className="absolute inset-0">
+            <CreativeCanvas mouseX={mouseXSpring} mouseY={mouseYSpring} />
+          </div>
+        </div>
+      </main>
     </div>
   );
 };

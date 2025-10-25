@@ -15,5 +15,12 @@
     "title": "Friend Links",
     "subtitle": "Check out some amazing websites from my friends and inspirations.",
     "visitButton": "Visit Site"
+  },
+  "Menu": {
+    "about": "About",
+    "skill": "Skill",
+    "project": "Project",
+    "contact": "Contact",
+    "blog": "Blog"
   }
 }
