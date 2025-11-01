@@ -8,6 +8,7 @@ import {
 import TextRevealEffect from "../ui/text-reveal-effect";
 import AnimatedGradientText from "../ui/animated-gradient-text";
 import { useTypeWriter } from "@/hooks/use-type-writer";
+import { Code, Coffee, Heart } from "lucide-react";
 
 const GsapPersonalIntro = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -22,8 +23,15 @@ const GsapPersonalIntro = () => {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
-  const words = ["前端开发者", "设计者", "创造者"];
+  const words = ["前端开发者. ", "设计者. ", "创造者. "];
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
+
+  const { fullText } = useTypeWriter({
+    texts: words,
+    speed: 200,
+    delay: 500,
+    isEllipsisShow: false,
+  });
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -90,7 +98,7 @@ const GsapPersonalIntro = () => {
               <AnimatePresence mode="wait">
                 <motion.span
                   className=" inline-block relative text-primary"
-                  animate={{ opacity: [0.7, 1, 0.7] }}
+                  animate={{ opacity: 1 }}
                   key={"key-" + currentWordIndex}
                   transition={{
                     duration: 2,
@@ -99,10 +107,65 @@ const GsapPersonalIntro = () => {
                     delay: 1.5,
                   }}
                 >
-                  {useTypeWriter({ texts: words, speed: 200, delay: 500 })}
+                  {fullText}
                 </motion.span>
               </AnimatePresence>
             </h4>
+            <p className="text-lg text-muted-foreground">
+              我是一名全栈开发者，热衷于创造出色的用户体验和高效的代码。
+              <br />
+              喜欢探索新技术，分享见解，合作学习
+            </p>
+            <div className="flex flex-wrap gap-4 items-center pb-4">
+              <motion.div
+                className="flex items-center gap-2 icon-item opacity-0"
+                whileHover={{ scale: 1.05 }}
+                whileInView={{ opacity: 1 }}
+                transition={{
+                  type: "tween",
+                  stiffness: 400,
+                  damping: 10,
+                  duration: 1.5,
+                }}
+              >
+                <div className="p-2 rounded-full bg-primary/10">
+                  <Code className="h-5 w-5 text-primary" />
+                </div>
+                <span>Developer</span>
+              </motion.div>
+              <motion.div
+                className="flex items-center gap-2 icon-item opacity-0"
+                whileHover={{ scale: 1.05 }}
+                whileInView={{ opacity: 1 }}
+                transition={{
+                  type: "tween",
+                  stiffness: 400,
+                  damping: 10,
+                  duration: 1.5,
+                }}
+              >
+                <div className="p-2 rounded-full bg-pink-500/10">
+                  <Heart className="h-5 w-5 text-pink-500" />
+                </div>
+                <span>热爱创造</span>
+              </motion.div>
+              <motion.div
+                className="flex items-center gap-2 icon-item opacity-0"
+                whileHover={{ scale: 1.05 }}
+                whileInView={{ opacity: 1 }}
+                transition={{
+                  type: "tween",
+                  stiffness: 400,
+                  damping: 10,
+                  duration: 1.5,
+                }}
+              >
+                <div className="p-2 rounded-full bg-amber-500/10">
+                  <Coffee className="h-5 w-5 text-amber-500" />
+                </div>
+                <span>咖啡爱好者</span>
+              </motion.div>
+            </div>
           </div>
         </div>
       </div>
