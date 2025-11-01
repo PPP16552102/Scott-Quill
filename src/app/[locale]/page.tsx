@@ -14,6 +14,7 @@ import { useState } from "react";
 import NavigationMenu from "@/components/navigation-menu";
 import CreativeCanvas from "@/components/creative-canvas";
 import GsapPersonalIntro from "@/components/sections/personal-intro";
+import ThreeDCard from "@/components/ui/3d-card";
 
 const HomePage = () => {
   const t = useTranslations("HomePage");
@@ -88,6 +89,12 @@ const HomePage = () => {
             <CreativeCanvas mouseX={mouseXSpring} mouseY={mouseYSpring} />
           </div>
           <GsapPersonalIntro />
+          <div>
+            <h1>ui test</h1>
+            <ThreeDCard>
+              <div>hello</div>
+            </ThreeDCard>
+          </div>
         </div>
       </main>
     </div>

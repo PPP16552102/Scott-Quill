@@ -42,7 +42,7 @@ const TextRevealEffect = ({
     visible: {},
   };
 
-  const charVariants = {
+  const charVariants: any = {
     hidden: {
       opacity: 0,
       y: 20,
