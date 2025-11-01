@@ -89,12 +89,7 @@ const HomePage = () => {
             <CreativeCanvas mouseX={mouseXSpring} mouseY={mouseYSpring} />
           </div>
           <GsapPersonalIntro />
-          <div>
-            <h1>ui test</h1>
-            <ThreeDCard>
-              <div>hello</div>
-            </ThreeDCard>
-          </div>
+          <div></div>
         </div>
       </main>
     </div>

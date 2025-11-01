@@ -1,6 +1,13 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  AnimatePresence,
+} from "framer-motion";
 import TextRevealEffect from "../ui/text-reveal-effect";
+import AnimatedGradientText from "../ui/animated-gradient-text";
+import { useTypeWriter } from "@/hooks/use-type-writer";
 
 const GsapPersonalIntro = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -14,6 +21,17 @@ const GsapPersonalIntro = () => {
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
+  const words = ["前端开发者", "设计者", "创造者"];
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentWordIndex((prev) => (prev + 1) % words.length);
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <motion.div
@@ -61,6 +79,30 @@ const GsapPersonalIntro = () => {
               className="text-3xl md:text-4xl font-bold tracking-tight mb-4"
               delay={1.5}
             />
+            <AnimatedGradientText
+              text="Scopter"
+              className="text-7xl font-bold tracking-tight pb-2"
+              gradient="from-blue-600 via-purple-600 to-blue-600"
+              delay={3.5}
+            />
+            <h4 className=" text-2xl md:text-3xl font-semibold text-foreground/80 mt-4">
+              热爱生活的{" "}
+              <AnimatePresence mode="wait">
+                <motion.span
+                  className=" inline-block relative text-primary"
+                  animate={{ opacity: [0.7, 1, 0.7] }}
+                  key={"key-" + currentWordIndex}
+                  transition={{
+                    duration: 2,
+                    repeat: Number.POSITIVE_INFINITY,
+                    repeatType: "loop",
+                    delay: 1.5,
+                  }}
+                >
+                  {useTypeWriter({ texts: words, speed: 200, delay: 500 })}
+                </motion.span>
+              </AnimatePresence>
+            </h4>
           </div>
         </div>
       </div>
