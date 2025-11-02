@@ -13,6 +13,8 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import NavigationMenu from "@/components/navigation-menu";
 import CreativeCanvas from "@/components/creative-canvas";
+import GsapPersonalIntro from "@/components/sections/personal-intro";
+import ThreeDCard from "@/components/ui/3d-card";
 
 const HomePage = () => {
   const t = useTranslations("HomePage");
@@ -86,6 +88,8 @@ const HomePage = () => {
           <div className="absolute inset-0">
             <CreativeCanvas mouseX={mouseXSpring} mouseY={mouseYSpring} />
           </div>
+          <GsapPersonalIntro />
+          <div></div>
         </div>
       </main>
     </div>
