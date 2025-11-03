@@ -8,7 +8,9 @@ import {
 import TextRevealEffect from "../ui/text-reveal-effect";
 import AnimatedGradientText from "../ui/animated-gradient-text";
 import { useTypeWriter } from "@/hooks/use-type-writer";
-import { Code, Coffee, Heart } from "lucide-react";
+import { Code, Coffee, Github, Heart } from "lucide-react";
+import MagneticButton from "../ui/magnetic-button";
+import { Button } from "../ui/button";
 
 const GsapPersonalIntro = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -165,6 +167,16 @@ const GsapPersonalIntro = () => {
                 </div>
                 <span>咖啡爱好者</span>
               </motion.div>
+              <div className="flex flex-wrap gap-4 ml-2">
+                <MagneticButton strength={20}>
+                  <Button asChild variant="default" className="rounded-full">
+                    <a className="flex items-center gap-2">
+                      <Github className="h-5 w-5" />
+                      Github
+                    </a>
+                  </Button>
+                </MagneticButton>
+              </div>
             </div>
           </div>
         </div>
