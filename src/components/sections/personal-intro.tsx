@@ -8,7 +8,7 @@ import {
 import TextRevealEffect from "../ui/text-reveal-effect";
 import AnimatedGradientText from "../ui/animated-gradient-text";
 import { useTypeWriter } from "@/hooks/use-type-writer";
-import { Code, Coffee, Github, Heart } from "lucide-react";
+import { Code, Coffee, ExternalLink, Github, Heart, Mail } from "lucide-react";
 import MagneticButton from "../ui/magnetic-button";
 import { Button } from "../ui/button";
 
@@ -167,16 +167,45 @@ const GsapPersonalIntro = () => {
                 </div>
                 <span>咖啡爱好者</span>
               </motion.div>
-              <div className="flex flex-wrap gap-4 ml-2">
-                <MagneticButton strength={20}>
-                  <Button asChild variant="default" className="rounded-full">
-                    <a className="flex items-center gap-2">
-                      <Github className="h-5 w-5" />
-                      Github
-                    </a>
-                  </Button>
-                </MagneticButton>
-              </div>
+            </div>
+            <div className="flex flex-wrap gap-4 ml-2">
+              <MagneticButton strength={20}>
+                <Button asChild variant="outline" className="rounded-full">
+                  <a
+                    href="https://github.com/PPP16552102"
+                    target="_blank"
+                    rel="noopener noreferer"
+                    className="flex items-center gap-2"
+                  >
+                    <Github className="h-5 w-5" />
+                    Github
+                  </a>
+                </Button>
+              </MagneticButton>
+              <MagneticButton strength={20}>
+                <Button asChild variant="outline" className="rounded-full">
+                  <a
+                    href="https://github.com/PPP16552102"
+                    className="flex items-center gap-2"
+                  >
+                    <Mail className="h-5 w-5" />
+                    联系我
+                  </a>
+                </Button>
+              </MagneticButton>
+              <MagneticButton strength={20}>
+                <Button asChild variant="outline" className="rounded-full">
+                  <a
+                    href="https://github.com/PPP16552102"
+                    target="_blank"
+                    rel="noopener noreferer"
+                    className="flex items-center gap-2"
+                  >
+                    <ExternalLink className="h-5 w-5" />
+                    博客
+                  </a>
+                </Button>
+              </MagneticButton>
             </div>
           </div>
         </div>
