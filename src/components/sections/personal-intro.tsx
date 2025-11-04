@@ -11,10 +11,22 @@ import { useTypeWriter } from "@/hooks/use-type-writer";
 import { Code, Coffee, ExternalLink, Github, Heart, Mail } from "lucide-react";
 import MagneticButton from "../ui/magnetic-button";
 import { Button } from "../ui/button";
+import { useTheme } from "next-themes";
 
 const GsapPersonalIntro = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const textRef = useRef<HTMLDivElement | null>(null);
+
+  const { theme, resolvedTheme } = useTheme();
+  const [isDark, setIsDark] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (resolvedTheme === "dark") {
+      setIsDark(true);
+    } else {
+      setIsDark(false);
+    }
+  }, [resolvedTheme]);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -206,6 +218,27 @@ const GsapPersonalIntro = () => {
                   </a>
                 </Button>
               </MagneticButton>
+            </div>
+          </div>
+          <div className="relative">
+            <div className="relative z-10 mx-auto max-w-md">
+              <motion.div
+                className="profile-image relative rounded-2xl"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                whileHover={{ scale: 1.03 }}
+              >
+                <img
+                  src="https://dogeoss.grtsinry43.com/img/author-removebg.png"
+                  alt="scopter"
+                  style={isDark ? { filter: "brightness(0.8)" } : {}}
+                  className="w-full h-auto"
+                />
+                {isDark && (
+                  <div className=" absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent" />
+                )}
+              </motion.div>
             </div>
           </div>
         </div>
