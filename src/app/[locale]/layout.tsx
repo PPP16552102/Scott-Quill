@@ -25,7 +25,7 @@ const RootLayout = async ({
   setRequestLocale(locale);
 
   return (
-    <html lang={locale} suppressContentEditableWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.ico" />
       </head>

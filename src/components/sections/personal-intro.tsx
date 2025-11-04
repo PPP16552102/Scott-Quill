@@ -12,6 +12,7 @@ import { Code, Coffee, ExternalLink, Github, Heart, Mail } from "lucide-react";
 import MagneticButton from "../ui/magnetic-button";
 import { Button } from "../ui/button";
 import { useTheme } from "next-themes";
+import FloatingIcons from "../ui/floating-icons";
 
 const GsapPersonalIntro = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -37,6 +38,81 @@ const GsapPersonalIntro = () => {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
+  useEffect(() => {
+    const loadGsap = async () => {
+      try {
+        const { gsap } = await import("gsap");
+        const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+        const { TextPlugin } = await import("gsap/TextPlugin");
+
+        gsap.registerPlugin(ScrollTrigger, TextPlugin);
+
+        if (!containerRef.current) return;
+
+        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+
+        const container = containerRef.current;
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: container,
+            start: "top 80%",
+            end: "bottom 20%",
+            toggleAttribute: "play none none reverse",
+          },
+        });
+
+        if (textRef.current) {
+          const headings = textRef.current.querySelectorAll("h3, h4");
+          const paragraphs = textRef.current.querySelectorAll("p");
+          const buttons = textRef.current.querySelectorAll("button, a");
+          const icons = textRef.current.querySelectorAll(".icon-item");
+
+          tl.from(headings, {
+            opacity: 0,
+            y: 50,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: "power3.out",
+          })
+            .from(paragraphs, {
+              opacity: 0,
+              y: 30,
+              duration: 0.6,
+              stagger: 0.2,
+              ease: "power2.out",
+            })
+            .from(
+              buttons,
+              {
+                opacity: 0,
+                y: 20,
+                scale: 0.9,
+                duration: 0.5,
+                stagger: 0.1,
+                ease: "back.out(1.7)",
+              },
+              "-=0.3"
+            )
+            .from(
+              icons,
+              {
+                opacity: 0,
+                scale: 0,
+                rotation: -30,
+                duration: 0.6,
+                stagger: 0.1,
+                ease: "back.out(2)",
+              },
+              "-=0.4"
+            );
+        }
+      } catch (error) {}
+    };
+
+    loadGsap();
+  }, [theme, resolvedTheme]);
+
   const words = ["前端开发者. ", "设计者. ", "创造者. "];
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
 
@@ -47,13 +123,13 @@ const GsapPersonalIntro = () => {
     isEllipsisShow: false,
   });
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentWordIndex((prev) => (prev + 1) % words.length);
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, []);
+  const floatingIcons = [
+    <Code key="code" className="h-6 w-6 text-blue-500" />,
+    <Heart key="heart" className="h-6 w-6 text-pink-500" />,
+    <Coffee key="coffee" className="h-6 w-6 text-amber-500" />,
+    <Github key="github" className="h-6 w-6 text-purple-500" />,
+    <Mail key="mail" className="h-6 w-6 text-green-500" />,
+  ];
 
   return (
     <motion.div
@@ -239,6 +315,16 @@ const GsapPersonalIntro = () => {
                   <div className=" absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent" />
                 )}
               </motion.div>
+              <FloatingIcons
+                icons={floatingIcons}
+                className={"absolute inset-0 z-20 pointer-events-none"}
+              />
+              <div className="shape absolute -top-6 -right-6 w-12 h-12 rounded-lg bg-linear-to-br from-blue-500 to-purple-500 rotate-12 shadow-lg" />
+              <div className="shape absolute -bottom-8 -left-8 w-16 h-16 rounded-full bg-linear-to-br from-emerald-500 to-green-500 shadow-lg" />
+              <div className="shape absolute top-1/2 -right-12 w-10 h-10 rounded-md bg-linear-to-br from-amber-500 to-orange-500 rotate-45 shadow-lg" />
+            </div>
+            <div className=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full -z-10">
+              <div className=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-primary/20 rounded-full blur-3xl" />
             </div>
           </div>
         </div>
