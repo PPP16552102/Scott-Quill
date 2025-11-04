@@ -15,6 +15,7 @@ import NavigationMenu from "@/components/navigation-menu";
 import CreativeCanvas from "@/components/creative-canvas";
 import GsapPersonalIntro from "@/components/sections/personal-intro";
 import ThreeDCard from "@/components/ui/3d-card";
+import KeywordSection from "@/components/sections/keyword-section";
 
 const HomePage = () => {
   const t = useTranslations("HomePage");
@@ -90,6 +91,13 @@ const HomePage = () => {
           </div>
           <GsapPersonalIntro />
         </div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1.2 }}
+        >
+          <KeywordSection />
+        </motion.div>
       </main>
     </div>
   );
