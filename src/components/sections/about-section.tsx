@@ -1,0 +1,183 @@
+"use client";
+
+import { useInView, useScroll, useTransform, motion } from "framer-motion";
+import { useRef } from "react";
+import { Button } from "../ui/button";
+import { Github } from "lucide-react";
+import SkillBadge from "../skill-badge";
+
+const AboutSection = () => {
+  const Skills = [
+    {
+      name: "React",
+    },
+    {
+      name: "Next.js",
+    },
+    {
+      name: "Vue.js",
+    },
+    {
+      name: "Nuxt.js",
+    },
+    {
+      name: "Svelte",
+    },
+    {
+      name: "Typescript",
+    },
+    {
+      name: "Javascript",
+    },
+    {
+      name: "Golang",
+    },
+    {
+      name: "Rust",
+    },
+  ];
+
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const isInView = useInView(sectionRef, { once: false, amount: 0.3 });
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], ["20%", "-20%"]);
+
+  return (
+    <section
+      ref={sectionRef}
+      className="relative py-24 md:py-32 overflow-hidden"
+    >
+      <div className="absolute inset-0 -z-10">
+        <div className=" absolute inset-0 bg-linear-to-t from-muted/20 to-transparent" />
+        <div className=" h-full w-full grid grid-cols-12 gap-4">
+          {Array(36)
+            .fill(0)
+            .map((_, i) => (
+              <motion.div
+                key={i}
+                className="row-span-1 bg-primary/80 rounded-lg"
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 0.8 } : { opacity: 0 }}
+                transition={{
+                  delay: i * 0.02,
+                  duration: 0.6,
+                  ease: "easeOut",
+                }}
+              />
+            ))}
+        </div>
+      </div>
+      <div className="container px-4 mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true, amount: 0.3 }}
+          className="flex items-center justify-center space-x-2 mb-12"
+        >
+          <div className="h-px w-12 bg-primary/60" />
+          <h2 className="text-lg font-medium text-primary">关于我</h2>
+          <div className="h-px w-12 bg-primary/60" />
+        </motion.div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <motion.div
+            className=" space-y-8 lg:col-span-6"
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true, amount: 0.3 }}
+          >
+            <h3 className="text-3xl md:text-4xl font-bold tracking-tight">
+              构建优雅、高效的
+              <br />
+              <span className="text-primary">数字体验</span>
+            </h3>
+
+            <div className="space-y-4 text-lg text-muted-foreground">
+              <p>
+                我是一名全栈开发者，专注于 Java/JavaScript 开发，目前正在转向
+                Kotlin/TypeScript 全栈开发，对于 Web 与跨平台有自己的见解。
+              </p>
+              <p>
+                我热爱创建优雅、高效的应用程序，无论是 Web 应用还是 Android
+                应用。对我来说良好的用户体验和干净的代码同样重要。
+              </p>
+              <p>目前我活跃于开源社区，并在个人博客上分享技术文章。</p>
+            </div>
+
+            <div className="flex gap-3">
+              <Button asChild variant="default">
+                <a
+                  href="https://github.com/PPP16552102"
+                  target="_blank"
+                  rel="noopener noreferer"
+                  className="flex items-center gap-2"
+                >
+                  <Github className="w-5 h-5" />
+                  Github
+                </a>
+              </Button>
+              <Button asChild variant="outline">
+                <a href="/" target="_blank" rel="noopener noreferer">
+                  我的博客
+                </a>
+              </Button>
+            </div>
+          </motion.div>
+          <div className="lg:col-span-1" />
+          <motion.div className=" lg:col-span-5 relative" style={{ y }}>
+            <div className="relative z-10">
+              <motion.div
+                className=" p-1 rounded-xl bg-linear-to-tr from-primary/30 via-primary/20 to-background backdrop-blur-sm border border-primary/20 shadow-xl"
+                initial={{
+                  opacity: 0,
+                  scale: 0.9,
+                  x: 20,
+                  backdropFilter: "blur(20px)",
+                }}
+                whileInView={{
+                  opacity: 1,
+                  scale: 1,
+                  x: 0,
+                  backdropFilter: "blur(0px)",
+                }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                viewport={{ once: true, amount: 0.3 }}
+              >
+                <div className="bg-card p-6 rounded-lg space-y-6">
+                  <div className="flex items-center gap-3">
+                    <div className="h-3 w-3 rounded-full bg-red-500" />
+                    <div className="h-3 w-3 rounded-full bg-yellow-500" />
+                    <div className="h-3 w-3 rounded-full bg-green-500" />
+                    <div className="ml-2 text-sm font-mono">
+                      ~/Scopter/skills
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <p className="font-mono text-sm text-primary mb-2">
+                        {"// 我的技术栈"}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {Skills.map((skill, index) => (
+                          <SkillBadge name={skill.name} key={index} />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default AboutSection;
