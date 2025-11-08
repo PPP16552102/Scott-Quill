@@ -16,6 +16,8 @@ import CreativeCanvas from "@/components/creative-canvas";
 import GsapPersonalIntro from "@/components/sections/personal-intro";
 import ThreeDCard from "@/components/ui/3d-card";
 import KeywordSection from "@/components/sections/keyword-section";
+import ParallaxText from "@/components/ParallaxText";
+import AboutSection from "@/components/sections/about-section";
 
 const HomePage = () => {
   const t = useTranslations("HomePage");
@@ -91,6 +93,12 @@ const HomePage = () => {
           </div>
           <GsapPersonalIntro />
         </div>
+
+        <section className="py-20 overflow-hidden opacity-55">
+          <ParallaxText baseVelocity={-3}>{t("parallaxText1")}</ParallaxText>
+          <ParallaxText baseVelocity={3}>{t("parallaxText2")}</ParallaxText>
+        </section>
+
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -98,6 +106,8 @@ const HomePage = () => {
         >
           <KeywordSection />
         </motion.div>
+
+        <AboutSection />
       </main>
     </div>
   );
