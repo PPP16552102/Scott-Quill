@@ -37,6 +37,24 @@ const AboutSection = () => {
     },
   ];
 
+  const DevTools = [
+    {
+      name: "VS Code",
+    },
+    {
+      name: "Visual Studio",
+    },
+    {
+      name: "Android Studio",
+    },
+    {
+      name: "XCode",
+    },
+    {
+      name: "Git",
+    },
+  ];
+
   const sectionRef = useRef<HTMLElement | null>(null);
   const isInView = useInView(sectionRef, { once: false, amount: 0.3 });
 
@@ -49,6 +67,7 @@ const AboutSection = () => {
 
   return (
     <section
+      id="about"
       ref={sectionRef}
       className="relative py-24 md:py-32 overflow-hidden"
     >
@@ -169,10 +188,23 @@ const AboutSection = () => {
                         ))}
                       </div>
                     </div>
+                    <div>
+                      <p className="font-mono text-sm text-primary mb-2">
+                        {"// 开发工具"}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {DevTools.map((devTool, index) => (
+                          <SkillBadge name={devTool.name} key={index} />
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </motion.div>
             </div>
+
+            <div className=" absolute -z-10 -top-10 -left-10 h-40 w-40 rounded-full bg-primary/100 blur-3xl" />
+            <div className=" absolute -z-10 -bottom-10 -right-10 h-60 w-60 rounded-full bg-primary/5 blur-3xl" />
           </motion.div>
         </div>
       </div>
