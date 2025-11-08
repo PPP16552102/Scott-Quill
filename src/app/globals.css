@@ -3,6 +3,31 @@
 @import "tailwindcss" layer(components);
 @import "tailwindcss" layer(utilities);
 
+@theme {
+  --color-background: #ffffff;
+  --color-foreground: #010816;
+  --color-card: #ffffff;
+  --color-card-foreground: #010816;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #010816;
+  --color-primary: #007fff;
+  --color-primary-foreground: #f7f9fb;
+  --color-secondary: #f1f5f9;
+  --color-secondary-foreground: #0f172a;
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+  --color-border: #e2e8f0;
+  --color-input: #e2e8f0;
+  --color-destructive: #ee4444;
+  --color-destructive-foreground: #f7f9fb;
+  --color-accent: #f1f5f9;
+  --color-accent-foreground: #0f172a;
+  --color-ring: #2462ea;
+  --radius-lg: 0.75rem;
+  --radius-md: calc(0.75rem - 2px);
+  --radius-sm: calc(0.75rem - 4px);
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

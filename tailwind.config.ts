@@ -3,7 +3,6 @@ import type { Config } from "tailwindcss";
 const TailwindConfig = {
   darkMode: ["class", "dark"],
   content: ["./src/**/*.{ts,tsx}", "*.{js,ts,jsx,tsx,mdx}"],
-  prefix: "",
   theme: {
     container: {
       center: true,

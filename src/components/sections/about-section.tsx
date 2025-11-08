@@ -81,7 +81,7 @@ const AboutSection = () => {
                 key={i}
                 className="row-span-1 bg-primary/80 rounded-lg"
                 initial={{ opacity: 0 }}
-                animate={isInView ? { opacity: 0.8 } : { opacity: 0 }}
+                animate={isInView ? { opacity: 0.2 } : { opacity: 0 }}
                 transition={{
                   delay: i * 0.02,
                   duration: 0.6,
@@ -203,7 +203,7 @@ const AboutSection = () => {
               </motion.div>
             </div>
 
-            <div className=" absolute -z-10 -top-10 -left-10 h-40 w-40 rounded-full bg-primary/100 blur-3xl" />
+            <div className=" absolute -z-10 -top-10 -left-10 h-40 w-40 rounded-full bg-primary blur-3xl" />
             <div className=" absolute -z-10 -bottom-10 -right-10 h-60 w-60 rounded-full bg-primary/5 blur-3xl" />
           </motion.div>
         </div>

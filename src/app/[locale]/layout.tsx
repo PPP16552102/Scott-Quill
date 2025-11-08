@@ -1,5 +1,5 @@
-import React from "react";
 import "../globals.css";
+import React from "react";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
