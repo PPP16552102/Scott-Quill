@@ -18,6 +18,7 @@ import ThreeDCard from "@/components/ui/3d-card";
 import KeywordSection from "@/components/sections/keyword-section";
 import ParallaxText from "@/components/ParallaxText";
 import AboutSection from "@/components/sections/about-section";
+import GsapSkillsTree from "@/components/sections/skill-tree";
 
 const HomePage = () => {
   const t = useTranslations("HomePage");
@@ -108,6 +109,10 @@ const HomePage = () => {
         </motion.div>
 
         <AboutSection />
+
+        <motion.div>
+          <GsapSkillsTree />
+        </motion.div>
       </main>
     </div>
   );
