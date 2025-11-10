@@ -83,6 +83,7 @@ const GsapSkillsTree = () => {
 
     let animationFrameId: number;
     let isAnimating = true;
+    let lastFrameTime = 0;
     let mouseMoveListener: (e: MouseEvent) => void;
     let resizeListener: () => void;
     let autoRotateTimeout: NodeJS.Timeout;
@@ -158,6 +159,28 @@ const GsapSkillsTree = () => {
         let mouseX = 0;
         let mouseY = 0;
 
+        const throttle = <T extends (...args: any[]) => void>(
+          func: T,
+          delay: number
+        ): T => {
+          let timeoutId: NodeJS.Timeout | null = null;
+          let lastExecTime = 0;
+          return ((...args: any[]) => {
+            const currentTime = Date.now();
+
+            if (currentTime - lastExecTime > delay) {
+              func.apply(null, args);
+              lastExecTime = currentTime;
+            } else {
+              if (timeoutId) clearTimeout(timeoutId);
+              timeoutId = setTimeout(() => {
+                func.apply(null, args);
+                lastExecTime = Date.now();
+              }, delay - (currentTime - lastExecTime));
+            }
+          }) as T;
+        };
+
         const handleMouseMove = (e: MouseEvent) => {
           const rect = canvas.getBoundingClientRect();
           if (!rect.width || !rect.height) return;
@@ -195,10 +218,127 @@ const GsapSkillsTree = () => {
           setActiveSkill(closestNode ? closestNode.name : null);
         };
 
-        mouseMoveListener = handleMouseMove;
+        mouseMoveListener = throttle(handleMouseMove, 16);
         canvas.addEventListener("mousemove", mouseMoveListener);
 
-        const draw = () => {};
+        const draw = () => {
+          const currentTime = Date.now();
+
+          if (!isAnimating) {
+            animationFrameId = requestAnimationFrame(() => {
+              setTimeout(draw, 100);
+            });
+            return;
+          }
+
+          if (currentTime - lastFrameTime < 33) {
+            animationFrameId = requestAnimationFrame(draw);
+            return;
+          }
+
+          lastFrameTime = currentTime;
+
+          ctx.clearRect(0, 0, cssWidth, cssHeight);
+
+          if (autoRotate) targetRotation.y += 0.002;
+
+          const rotationChanged =
+            Math.abs(rotation.x - targetRotation.x) > 0.001 ||
+            Math.abs(rotation.y - targetRotation.y) > 0.001;
+
+          if (rotationChanged) {
+            rotation.x += (targetRotation.x - rotation.x) * 0.08;
+            rotation.y += (targetRotation.y - rotation.y) * 0.08;
+          }
+
+          const cosX = Math.cos(rotation.x);
+          const sinX = Math.sin(rotation.x);
+          const cosY = Math.cos(rotation.y);
+          const sinY = Math.sin(rotation.y);
+
+          const currentCssCenter = { x: cssWidth / 2, y: cssHeight / 2 };
+          const cssSphereDisplayRadius = Math.min(cssWidth, cssHeight) * 0.35;
+
+          skillNodes.forEach((node) => {
+            const y_rotated = node.y3d * cosX - node.z3d * sinX;
+            const z_intermediate = node.y3d * sinX + node.z3d * cosX;
+            const x_final_model = node.x3d * cosY - z_intermediate * sinY;
+            const z_final_model = node.x3d * sinY + z_intermediate * cosY;
+            const y_final_model = y_rotated;
+
+            node.scale = (z_final_model / modelSpaceRadius + 2.5) / 3.5;
+            node.opacity = Math.max(0, (node.scale - 0.5) * 2);
+
+            if (node.opacity > 0) {
+              node.x2d =
+                currentCssCenter.x +
+                (x_final_model / modelSpaceRadius) *
+                  cssSphereDisplayRadius *
+                  node.scale;
+              node.y2d =
+                currentCssCenter.y +
+                (y_final_model / modelSpaceRadius) *
+                  cssSphereDisplayRadius *
+                  node.scale;
+
+              ctx.save();
+              ctx.globalAlpha = node.opacity;
+
+              const nodeSize = (8 + node.level / 15) * node.scale;
+
+              // Draw glow effect
+              const gradient = ctx.createRadialGradient(
+                node.x2d,
+                node.y2d,
+                0,
+                node.x2d,
+                node.y2d,
+                nodeSize * 2
+              );
+              gradient.addColorStop(0, node.color + "80"); // Semi-transparent
+              gradient.addColorStop(1, node.color + "00"); // Transparent
+
+              ctx.fillStyle = gradient;
+              ctx.beginPath();
+              ctx.arc(node.x2d, node.y2d, nodeSize * 1.5, 0, Math.PI * 2);
+              ctx.fill();
+
+              // Draw node
+              ctx.fillStyle = node.color;
+              ctx.beginPath();
+              ctx.arc(node.x2d, node.y2d, nodeSize, 0, Math.PI * 2);
+              ctx.fill();
+
+              // Add highlight
+              ctx.fillStyle = "#ffffff";
+              ctx.globalAlpha = 0.3 * node.opacity;
+              ctx.beginPath();
+              ctx.arc(
+                node.x2d - nodeSize * 0.3,
+                node.y2d - nodeSize * 0.3,
+                nodeSize * 0.3,
+                0,
+                Math.PI * 2
+              );
+              ctx.fill();
+
+              if (nodeSize > 5) {
+                ctx.font = `${Math.min(14, nodeSize * 1) * node.scale}px Arial`;
+                ctx.fillStyle = theme === "dark" ? "#ffffff" : "#000000";
+                ctx.globalAlpha = node.opacity;
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText(
+                  node.name,
+                  node.x2d,
+                  node.y2d + nodeSize + 5 * node.scale
+                );
+              }
+              ctx.restore();
+            }
+          });
+          animationFrameId = requestAnimationFrame(draw);
+        };
 
         draw();
       } catch (error) {
@@ -276,8 +416,47 @@ const GsapSkillsTree = () => {
           {SkillGroups.map((group, index) => (
             <ThreeDCard
               key={group.id}
-              className={`p-6 rounded-2xl border-l-4`}
-            ></ThreeDCard>
+              className={`p-6 rounded-2xl border-l-4 ${
+                hoveredGroup === group.id
+                  ? "border-l-primary"
+                  : `border-l-${group.color.split(" ")[0].replace("from-", "")}`
+              }`}
+              glareColor={`rgba(${
+                group.id === "web"
+                  ? "100, 150, 255"
+                  : group.id === "backend"
+                  ? "100, 200, 150"
+                  : "255, 150, 100"
+              })`}
+              rotationIntensity={10}
+              // @ts-ignore
+              onMouseEnter={() => setHoveredGroup(group.id)}
+              onMouseLeave={() => setHoveredGroup(null)}
+            >
+              <div
+                className={`h-2 w-16 rounded-full bg-linear-to-r ${group.color} mb-4`}
+              />
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-2xl">{group.icon}</span>
+                <h4 className="text-xl font-semibold text-card-foreground">
+                  {group.name}
+                </h4>
+              </div>
+              <div className="space-y-4">
+                {Skills.filter((skill) => skill.group === group.id)
+                  .slice(0, 4)
+                  .map((skill) => (
+                    <div key={skill.name} className=" space-y-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-muted-foreground">
+                          {skill.name}
+                        </span>
+                        <span className="text-xs text-muted-foreground/80 font-medium"></span>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </ThreeDCard>
           ))}
         </div>
       </div>
