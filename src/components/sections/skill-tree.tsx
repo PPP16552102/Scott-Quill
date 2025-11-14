@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import ThreeDCard from "../ui/3d-card";
 import { useTheme } from "next-themes";
 import { MAX_DPR } from "@/constants/client/device";
+import AnimatedCounter from "../ui/animated-counter";
 
 const GsapSkillsTree = () => {
   const { theme } = useTheme();
@@ -32,9 +33,10 @@ const GsapSkillsTree = () => {
     { name: "PostgreSQL", level: 95, group: "backend", color: "#4479A1" },
 
     // mobile skill
+    { name: "Taro", level: 95, group: "mobile", color: "#007396" },
     { name: "Uniapp", level: 95, group: "mobile", color: "#6DB33F" },
-    { name: "React Native", level: 90, group: "mobile", color: "#6DB33F" },
-    { name: "Electron", level: 85, group: "mobile", color: "#007396" },
+    { name: "React Native", level: 80, group: "mobile", color: "#6DB33F" },
+    { name: "Electron", level: 75, group: "mobile", color: "#007396" },
   ];
 
   const SkillGroups = [
@@ -451,7 +453,27 @@ const GsapSkillsTree = () => {
                         <span className="text-sm text-muted-foreground">
                           {skill.name}
                         </span>
-                        <span className="text-xs text-muted-foreground/80 font-medium"></span>
+                        <span className="text-xs text-muted-foreground/80 font-medium">
+                          <AnimatedCounter
+                            from={0}
+                            to={skill.level}
+                            duration={1.5}
+                            delay={index * 0.2}
+                            formatter={(value) => `${Math.round(value)}%`}
+                          />
+                        </span>
+                      </div>
+                      <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
+                        <motion.div
+                          className={`h-full rounded-full bg-linear-to-r ${group.color}`}
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${skill.level}%` }}
+                          transition={{
+                            duration: 1.5,
+                            delay: index * 0.2 + 0.2,
+                          }}
+                          viewport={{ once: true }}
+                        />
                       </div>
                     </div>
                   ))}
