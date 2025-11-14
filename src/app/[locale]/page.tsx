@@ -14,11 +14,11 @@ import { useState } from "react";
 import NavigationMenu from "@/components/navigation-menu";
 import CreativeCanvas from "@/components/creative-canvas";
 import GsapPersonalIntro from "@/components/sections/personal-intro";
-import ThreeDCard from "@/components/ui/3d-card";
 import KeywordSection from "@/components/sections/keyword-section";
 import ParallaxText from "@/components/ParallaxText";
 import AboutSection from "@/components/sections/about-section";
 import GsapSkillsTree from "@/components/sections/skill-tree";
+import GsapProjectShowCase from "@/components/sections/project-showcase";
 
 const HomePage = () => {
   const t = useTranslations("HomePage");
@@ -112,6 +112,10 @@ const HomePage = () => {
 
         <motion.div>
           <GsapSkillsTree />
+        </motion.div>
+
+        <motion.div>
+          <GsapProjectShowCase />
         </motion.div>
       </main>
     </div>

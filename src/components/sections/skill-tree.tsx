@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import ThreeDCard from "../ui/3d-card";
 import { useTheme } from "next-themes";
-import { MAX_DPR } from "@/constants/client/device";
 import AnimatedCounter from "../ui/animated-counter";
 
 const GsapSkillsTree = () => {
@@ -114,12 +113,13 @@ const GsapSkillsTree = () => {
           const rect = canvas.getBoundingClientRect();
           cssWidth = rect.width;
           cssHeight = rect.height;
+          const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-          canvas.width = cssWidth * MAX_DPR;
-          canvas.height = cssHeight * MAX_DPR;
+          canvas.width = cssWidth * dpr;
+          canvas.height = cssHeight * dpr;
 
           ctx.resetTransform();
-          ctx.scale(MAX_DPR, MAX_DPR);
+          ctx.scale(dpr, dpr);
         };
 
         setCanvasSize();
