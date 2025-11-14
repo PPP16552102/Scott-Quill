@@ -364,10 +364,10 @@ const GsapSkillsTree = () => {
     <section
       id="skills"
       ref={containerRef}
-      className=" relative py-24 md:py-32 overflow-hidden bg-muted/30"
+      className="relative py-24 md:py-32 overflow-hidden bg-muted/30"
     >
-      <div className=" absolute inset-0 -z-10">
-        <div className=" absolute inset-0" />
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute inset-0" />
       </div>
 
       <div className="container px-4 mx-auto relative z-10">
@@ -403,18 +403,18 @@ const GsapSkillsTree = () => {
           探索我的技能宇宙 - 移动鼠标与技能球体互动，查看我的专业技能和熟练程度
         </motion.p>
 
-        <div className=" relative w-full max-w-xl md:max-w-2xl aspect-square mx-auto mb-16">
+        <div className="relative w-full max-w-xl md:max-w-2xl aspect-square mx-auto mb-16">
           <canvas
             ref={canvasRef}
             className="w-ful h-full cursor-move"
             style={{ touchAction: "none" }}
           />
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-card/80 backdrop-blur-sm p-3 rounded-lg border border-border/50 shadow-lg text-xs md:text-sm">
-            <p className=" text-center"></p>
+            <p className="text-center"></p>
           </div>
         </div>
 
-        <div className=" grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {SkillGroups.map((group, index) => (
             <ThreeDCard
               key={group.id}
@@ -477,6 +477,15 @@ const GsapSkillsTree = () => {
                       </div>
                     </div>
                   ))}
+                {Skills.filter((skill) => skill.group === group.id).length >
+                  4 && (
+                  <motion.div
+                    className="text-xs text-right text-muted-foreground/70 mt-2"
+                    whileHover={{ x: 5 }}
+                  >
+                    +{Skills.filter((skill) => skill.group === group.id).length}
+                  </motion.div>
+                )}
               </div>
             </ThreeDCard>
           ))}
