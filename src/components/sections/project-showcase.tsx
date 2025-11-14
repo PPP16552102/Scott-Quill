@@ -5,7 +5,9 @@ import { motion } from "framer-motion";
 import { client } from "@/sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
-import { useTheme } from "next-themes";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
+import { ArrowRight, ExternalLink, Github } from "lucide-react";
 
 interface Project {
   _id: number;
@@ -30,8 +32,6 @@ const urlFor = (source: SanityImageSource) => {
 };
 
 const GsapProjectShowCase = () => {
-  const { theme } = useTheme();
-
   const containerRef = useRef<HTMLElement | null>(null);
   const horizontalRef = useRef<HTMLDivElement | null>(null);
 
@@ -72,6 +72,152 @@ const GsapProjectShowCase = () => {
       setContainerWidth(totalWidth);
     }
   }, [projects.length]);
+
+  // horizontal scroll
+  useEffect(() => {
+    if (!isInView) return;
+
+    const loadGsap = async () => {
+      try {
+        const { default: gsap } = await import("gsap");
+        const { default: ScrollTrigger } = await import("gsap/ScrollTrigger");
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        if (!containerRef.current || !horizontalRef.current) return;
+
+        const scrollTween = gsap.to(horizontalRef.current, {
+          x: () => -(containerWidth - window.innerWidth + 100),
+          ease: "none",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: () => `+=${containerWidth}`,
+            pin: true,
+            scrub: 1,
+            invalidateOnRefresh: true,
+            anticipatePin: 1,
+          },
+        });
+
+        const projectCards =
+          horizontalRef.current.querySelectorAll(".project-card");
+        projectCards.forEach((card, i) => {
+          const image = card.querySelector(".project-image");
+          const content = card.querySelector(".project-content");
+          const title = card.querySelector(".project-title");
+          const desc = card.querySelector(".project-desc");
+          const tags = card.querySelector(".project-tags");
+          const links = card.querySelector(".project-links");
+
+          if (image) {
+            gsap.fromTo(
+              image,
+              {
+                y: 50,
+                opacity: 0,
+              },
+              {
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                scrollTrigger: {
+                  containerAnimation: scrollTween,
+                  trigger: card,
+                  start: "left center",
+                  toggleActions: "play none none reverse",
+                },
+              }
+            );
+          }
+
+          if (title) {
+            gsap.fromTo(
+              title,
+              { y: 30, opacity: 0 },
+              {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                delay: 0.2,
+                scrollTrigger: {
+                  containerAnimation: scrollTween,
+                  trigger: card,
+                  start: "left center",
+                  toggleActions: "play none none reverse",
+                },
+              }
+            );
+          }
+
+          if (desc) {
+            gsap.fromTo(
+              desc,
+              { y: 30, opacity: 0 },
+              {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                delay: 0.4,
+                scrollTrigger: {
+                  containerAnimation: scrollTween,
+                  trigger: card,
+                  start: "left center",
+                  toggleActions: "play none none reverse",
+                },
+              }
+            );
+          }
+
+          if (tags) {
+            gsap.fromTo(
+              tags,
+              { y: 30, opacity: 0 },
+              {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                delay: 0.6,
+                scrollTrigger: {
+                  containerAnimation: scrollTween,
+                  trigger: card,
+                  start: "left center",
+                  toggleActions: "play none none reverse",
+                },
+              }
+            );
+          }
+          if (links) {
+            gsap.fromTo(
+              links,
+              { y: 30, opacity: 0 },
+              {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                delay: 0.8,
+                scrollTrigger: {
+                  containerAnimation: scrollTween,
+                  trigger: card,
+                  start: "left center",
+                  toggleActions: "play none none reverse",
+                },
+              }
+            );
+          }
+        });
+
+        return () => {
+          scrollTween.kill();
+          ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+        };
+      } catch (error) {
+        console.error("Failed to load GSAP:", error);
+      }
+    };
+
+    loadGsap();
+  }, [isInView, containerWidth]);
 
   return (
     <section
@@ -124,7 +270,7 @@ const GsapProjectShowCase = () => {
       >
         {projects.map((project, index) => {
           const coverUrl = project.cover
-            ? urlFor(project.cover)?.width(600).height(600).url()
+            ? urlFor(project.cover)?.width(600).height(500).url()
             : "/placeholder.svg";
           return (
             <div
@@ -146,10 +292,80 @@ const GsapProjectShowCase = () => {
                 <p className="project-desc text-lg text-muted-foreground mb-6">
                   {project.description}
                 </p>
+                <div className="project-tags flex flex-wrap gap-2 mb-6">
+                  {project.techStack?.split(",").map((tag: string) => (
+                    <Badge
+                      key={tag}
+                      variant="outline"
+                      className="bg-primary/10 text-primary border-primary/20"
+                    >
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+                <div className="project-links flex gap-4">
+                  {project?.githubUrl && (
+                    <Button
+                      asChild
+                      variant="outline"
+                      size="sm"
+                      className="bg-primary/10 text-primary border-primary/20"
+                    >
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2"
+                      >
+                        <Github className="h-4 w-4" />
+                        Github
+                      </a>
+                    </Button>
+                  )}
+                  {project?.deployUrl && (
+                    <Button asChild variant="ghost" size="sm">
+                      <a
+                        href={project.deployUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                        查看项目
+                      </a>
+                    </Button>
+                  )}
+                </div>
+
+                {/**项目序号 */}
+                <div className="absolute top-8 right-8 text-8xl font-bold text-primary/10">
+                  {String(index + 1).padStart(2, "0")}
+                </div>
               </div>
             </div>
           );
         })}
+        {/**结束提示 */}
+        <div className="shrink-0 w-[300px] h-[500px] flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-muted-foreground mb-4">想了解更多项目？</p>
+            <Button asChild>
+              <a href="#contact" className="flex items-center gap-2">
+                转到项目页面 <ArrowRight className="h-4 w-4" />
+              </a>
+            </Button>
+          </div>
+        </div>
+        {/**滚动提示 */}
+        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10 text-center">
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY }}
+            className="text-sm text-muted-foreground"
+          >
+            向下滚动继续探索
+          </motion.div>
+        </div>
       </div>
     </section>
   );

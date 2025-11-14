@@ -32,4 +32,4 @@ const Badge = ({ className, variant, ...props }: BadgeProps) => {
   );
 };
 
-export default Badge;
+export { Badge, badgeVariants };
