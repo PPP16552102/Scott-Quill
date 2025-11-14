@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import ThreeDCard from "../ui/3d-card";
 import { useTheme } from "next-themes";
-import { MAX_DPR } from "@/constants/client/device";
+import AnimatedCounter from "../ui/animated-counter";
 
 const GsapSkillsTree = () => {
   const { theme } = useTheme();
@@ -32,9 +32,10 @@ const GsapSkillsTree = () => {
     { name: "PostgreSQL", level: 95, group: "backend", color: "#4479A1" },
 
     // mobile skill
+    { name: "Taro", level: 95, group: "mobile", color: "#007396" },
     { name: "Uniapp", level: 95, group: "mobile", color: "#6DB33F" },
-    { name: "React Native", level: 90, group: "mobile", color: "#6DB33F" },
-    { name: "Electron", level: 85, group: "mobile", color: "#007396" },
+    { name: "React Native", level: 80, group: "mobile", color: "#6DB33F" },
+    { name: "Electron", level: 75, group: "mobile", color: "#007396" },
   ];
 
   const SkillGroups = [
@@ -112,12 +113,13 @@ const GsapSkillsTree = () => {
           const rect = canvas.getBoundingClientRect();
           cssWidth = rect.width;
           cssHeight = rect.height;
+          const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-          canvas.width = cssWidth * MAX_DPR;
-          canvas.height = cssHeight * MAX_DPR;
+          canvas.width = cssWidth * dpr;
+          canvas.height = cssHeight * dpr;
 
           ctx.resetTransform();
-          ctx.scale(MAX_DPR, MAX_DPR);
+          ctx.scale(dpr, dpr);
         };
 
         setCanvasSize();
@@ -362,10 +364,10 @@ const GsapSkillsTree = () => {
     <section
       id="skills"
       ref={containerRef}
-      className=" relative py-24 md:py-32 overflow-hidden bg-muted/30"
+      className="relative py-24 md:py-32 overflow-hidden bg-muted/30"
     >
-      <div className=" absolute inset-0 -z-10">
-        <div className=" absolute inset-0" />
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute inset-0" />
       </div>
 
       <div className="container px-4 mx-auto relative z-10">
@@ -401,18 +403,18 @@ const GsapSkillsTree = () => {
           探索我的技能宇宙 - 移动鼠标与技能球体互动，查看我的专业技能和熟练程度
         </motion.p>
 
-        <div className=" relative w-full max-w-xl md:max-w-2xl aspect-square mx-auto mb-16">
+        <div className="relative w-full max-w-xl md:max-w-2xl aspect-square mx-auto mb-16">
           <canvas
             ref={canvasRef}
             className="w-ful h-full cursor-move"
             style={{ touchAction: "none" }}
           />
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-card/80 backdrop-blur-sm p-3 rounded-lg border border-border/50 shadow-lg text-xs md:text-sm">
-            <p className=" text-center"></p>
+            <p className="text-center"></p>
           </div>
         </div>
 
-        <div className=" grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {SkillGroups.map((group, index) => (
             <ThreeDCard
               key={group.id}
@@ -451,10 +453,39 @@ const GsapSkillsTree = () => {
                         <span className="text-sm text-muted-foreground">
                           {skill.name}
                         </span>
-                        <span className="text-xs text-muted-foreground/80 font-medium"></span>
+                        <span className="text-xs text-muted-foreground/80 font-medium">
+                          <AnimatedCounter
+                            from={0}
+                            to={skill.level}
+                            duration={1.5}
+                            delay={index * 0.2}
+                            formatter={(value) => `${Math.round(value)}%`}
+                          />
+                        </span>
+                      </div>
+                      <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
+                        <motion.div
+                          className={`h-full rounded-full bg-linear-to-r ${group.color}`}
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${skill.level}%` }}
+                          transition={{
+                            duration: 1.5,
+                            delay: index * 0.2 + 0.2,
+                          }}
+                          viewport={{ once: true }}
+                        />
                       </div>
                     </div>
                   ))}
+                {Skills.filter((skill) => skill.group === group.id).length >
+                  4 && (
+                  <motion.div
+                    className="text-xs text-right text-muted-foreground/70 mt-2"
+                    whileHover={{ x: 5 }}
+                  >
+                    +{Skills.filter((skill) => skill.group === group.id).length}
+                  </motion.div>
+                )}
               </div>
             </ThreeDCard>
           ))}
