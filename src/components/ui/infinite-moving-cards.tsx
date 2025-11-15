@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
 
-interface CardItems {
+export interface CardItems {
   quote: string;
   name: string;
   title: string;
@@ -29,6 +29,10 @@ export const InfiniteMovingCards = ({
 
   const [start, setStart] = useState(false);
 
+  useEffect(() => {
+    addAnimation();
+  }, []);
+
   const addAnimation = () => {
     if (containerRef.current && scrollerRef.current) {
       const scrollerContent = Array.from(scrollerRef.current.children);
@@ -39,7 +43,7 @@ export const InfiniteMovingCards = ({
       });
 
       getDirection();
-      getSpeed;
+      getSpeed();
       setStart(true);
     }
   };
@@ -78,10 +82,6 @@ export const InfiniteMovingCards = ({
       }
     }
   };
-
-  useEffect(() => {
-    addAnimation();
-  }, []);
 
   return (
     <div
