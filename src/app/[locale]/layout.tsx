@@ -16,8 +16,6 @@ const RootLayout = async ({
   const message = await getMessages();
   const { locale } = await params;
 
-  console.log("locale -> ", locale);
-
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
