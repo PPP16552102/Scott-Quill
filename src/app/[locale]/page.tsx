@@ -20,6 +20,7 @@ import AboutSection from "@/components/sections/about-section";
 import GsapSkillsTree from "@/components/sections/skill-tree";
 import GsapProjectShowCase from "@/components/sections/project-showcase";
 import { LampContainer } from "@/components/ui/lamp-container";
+import CardSection from "@/components/sections/card-section";
 
 const HomePage = () => {
   const t = useTranslations("HomePage");
@@ -134,6 +135,8 @@ const HomePage = () => {
             <p className="mt-4">{t("personalityAndInterests")}</p>
           </motion.h1>
         </LampContainer>
+
+        <CardSection />
       </main>
     </div>
   );
