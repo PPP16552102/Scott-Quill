@@ -22,6 +22,7 @@ import GsapProjectShowCase from "@/components/sections/project-showcase";
 import { LampContainer } from "@/components/ui/lamp-container";
 import CardSection from "@/components/sections/card-section";
 import PersonalitySection from "@/components/sections/personality-section";
+import FinalSection from "@/components/sections/final-section";
 
 const HomePage = () => {
   const t = useTranslations("HomePage");
@@ -139,7 +140,11 @@ const HomePage = () => {
 
         <CardSection />
 
-        <PersonalitySection/>
+        <PersonalitySection />
+
+        <motion.div className="pb-10">
+          <FinalSection />
+        </motion.div>
       </main>
     </div>
   );
