@@ -11,7 +11,7 @@ const RootLayout = async ({
   params,
 }: {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) => {
   const message = await getMessages();
   const { locale } = await params;

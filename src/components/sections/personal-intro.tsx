@@ -58,7 +58,7 @@ const GsapPersonalIntro = () => {
             trigger: container,
             start: "top 80%",
             end: "bottom 20%",
-            toggleAttribute: "play none none reverse",
+            toggleClass: "play none none reverse",
           },
         });
 
